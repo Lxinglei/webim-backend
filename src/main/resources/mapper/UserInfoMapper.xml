@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.meteor.im.mapper.UserInfoMapper">
+
+    <insert id="insert1"
+            useGeneratedKeys="true"
+            keyProperty="userId"
+            keyColumn="user_id">
+        INSERT INTO
+        t_user_info(
+        `nick_name`,
+        `gender`,
+        `birthday`,
+        `signature`,
+        `status`,
+        `create_time`,
+        `last_update_time`
+        )
+        VALUES (
+        #{nickName},
+        #{gender},
+        #{birthday},
+        #{signature},
+        #{status},
+        #{createTime},
+        #{lastUpdateTime}
+        )
+    </insert>
+</mapper>
