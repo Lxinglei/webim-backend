@@ -1,16 +1,22 @@
 package cn.meteor.im.entity;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Date;
 
 /**
  * 账号密码认证
  * @author Meteor
  */
+@Table(name = "t_local_auth")
 public class LocalAuth {
 
     /**
      * 主键
      */
+    @Id
+    @GeneratedValue(generator = "JDBC")
     private Long localAuthId;
 
     /**

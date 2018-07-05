@@ -1,16 +1,25 @@
 package cn.meteor.im.entity;
 
+import javax.annotation.Generated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Date;
 
 /**
  * 好友关系信息
  * @author Meteor
  */
+
+@Table(name = "t_friendship")
 public class Friendship {
 
     /**
      * 主键
      */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY,generator = "select uuid()")
     private String friendshipId;
 
     /**

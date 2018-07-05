@@ -51,5 +51,10 @@
     <bean class="tk.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
         <property name="basePackage" value="cn.meteor.im.mapper"/>
+        <property name="properties">
+            <value>
+                ORDER=BEFORE
+            </value>
+        </property>
     </bean>
 </beans>

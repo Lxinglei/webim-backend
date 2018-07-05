@@ -1,16 +1,24 @@
 package cn.meteor.im.entity;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Date;
 
 /**
  * 消息
  * @author Meteor
  */
+
+@Table(name = "t_message")
 public class Message {
 
     /**
      * 主键
      */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "select uuid()")
     private String messageId;
 
     /**
@@ -19,9 +27,19 @@ public class Message {
     private Long senderId;
 
     /**
+     * 发送者昵称
+     */
+    private String senderName;
+
+    /**
      * 接收者ID
      */
     private Long receiverId;
+
+    /**
+     * 接收者昵称
+     */
+    private String receiverName;
 
     /**
      * 消息内容
@@ -97,5 +115,21 @@ public class Message {
 
     public void setLastUpdateTime(Date lastUpdateTime) {
         this.lastUpdateTime = lastUpdateTime;
+    }
+
+    public String getSenderName() {
+        return senderName;
+    }
+
+    public void setSenderName(String senderName) {
+        this.senderName = senderName;
+    }
+
+    public String getReceiverName() {
+        return receiverName;
+    }
+
+    public void setReceiverName(String receiverName) {
+        this.receiverName = receiverName;
     }
 }

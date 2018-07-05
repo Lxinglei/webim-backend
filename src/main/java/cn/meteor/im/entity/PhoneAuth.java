@@ -1,16 +1,23 @@
 package cn.meteor.im.entity;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Date;
 
 /**
  * 手机号认证
  * @author Meteor
  */
+
+@Table(name = "t_phone_auth")
 public class PhoneAuth {
 
     /**
      * 主键
      */
+    @Id
+    @GeneratedValue(generator = "JDBC")
     private Long phoneAuthId;
 
     /**
