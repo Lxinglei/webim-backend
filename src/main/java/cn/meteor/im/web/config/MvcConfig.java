@@ -1,5 +1,6 @@
 package cn.meteor.im.web.config;
 
+import cn.meteor.im.interceptors.ApiInterceptor;
 import com.google.common.base.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -8,7 +9,9 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -38,7 +41,7 @@ import static springfox.documentation.builders.PathSelectors.regex;
 @EnableSwagger2
 @EnableWebMvc
 @ComponentScan(basePackages = {"cn.meteor.im.web"})
-public class SwaggerConfig extends WebMvcConfigurationSupport {
+public class MvcConfig extends WebMvcConfigurationSupport {
 
     @Bean
     public Docket swaggerSpringMvcPlugin() {
@@ -74,4 +77,15 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
                 .build();
     }
 
+    @Bean
+    private HandlerInterceptor getApiInterceptor() {
+        return new ApiInterceptor();
+    }
+
+    @Override
+    protected void addInterceptors(InterceptorRegistry registry) {
+        registry
+                .addInterceptor(getApiInterceptor())
+                .addPathPatterns("/*");
+    }
 }

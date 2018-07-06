@@ -69,5 +69,9 @@
 	<!-- 4.扫描web相关的bean -->
 	<context:component-scan base-package="cn.meteor.im.web" />
 	<!-- 5.权限拦截器 -->
+    <mvc:interceptors>
+        <bean class="cn.meteor.im.interceptors.ApiInterceptor">
+        </bean>
+    </mvc:interceptors>
 
 </beans>
