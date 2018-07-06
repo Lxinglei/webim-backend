@@ -1,14 +1,20 @@
 package cn.meteor.im.entity;
 
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 /**
  * 账号密码认证
  * @author Meteor
  */
+
 @Table(name = "t_local_auth")
 public class LocalAuth {
 
@@ -27,11 +33,15 @@ public class LocalAuth {
     /**
      * 用户名
      */
+    @ApiModelProperty(value = "用户名(不能重复)", required = true)
+    @Size(min = 3, max = 10, message = "{localAuth.username}")
     private String username;
 
     /**
      * 密码
      */
+    @ApiModelProperty(value = "密码)", required = true)
+    @Size(min = 3, max = 10, message = "{localAuth.password}")
     private String password;
 
     /**

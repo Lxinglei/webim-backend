@@ -6,7 +6,11 @@ package cn.meteor.im.enums;
 public enum  UserStateEnum {
 
     SUCCESS(200, "操作成功"),
+    GENDER_FEMALE(1, "女"),
+    GENDER_MALE(1, "男"),
+    GENDER_SECRET(0, "保密"),
     DISABLED(-1, "用户禁用"),
+    REGISTERED(-1001, "用户名已被注册"),
     ENABLED(1, "用户启用");
 
     /**
