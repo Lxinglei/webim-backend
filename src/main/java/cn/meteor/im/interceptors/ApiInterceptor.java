@@ -22,7 +22,15 @@ public class ApiInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
         logger.info("进入ApiInterceptor...");
         String authorization = request.getHeader("Authorization");
-
+        logger.debug(authorization);
+        if (null == authorization || !authorization.startsWith("Bearer ")) {
+            logger.error("未带token");
+            response.setStatus(401);
+            response.setHeader("Content-Type", "application/json;charset=UTF-8");
+            response.getWriter().print("{\"code\": \"401\", \"error\": \"unauthorized\", \"message\": \"authorization required\"}");
+            response.getWriter().flush();
+            return false;
+        }
         return true;
     }
 
