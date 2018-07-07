@@ -1,5 +1,8 @@
 package cn.meteor.im.util;
 
+import cn.meteor.im.dto.JwtResult;
+import cn.meteor.im.entity.LocalAuth;
+import cn.meteor.im.entity.UserInfo;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,12 +25,11 @@ public class JwtUtil {
 
     /**
      * 生成token
-     * @param id
-     * @param subject
-     * @param ttlMillis
+     * @param claims
+     * @param ttl
      * @return
      */
-    public static String createJwt(String id, String subject, long ttlMillis) {
+    public static JwtResult createJwt(Claims claims, long ttl) {
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
         long nowMillis = System.currentTimeMillis();
         Date now = new Date(nowMillis);
@@ -35,28 +37,25 @@ public class JwtUtil {
         byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(secretKey);
         Key signingKey = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
 
-        JwtBuilder builder = Jwts.builder().setId(id)
+        JwtBuilder builder = Jwts.builder().setClaims(claims)
                 .setIssuedAt(now);
-        if (subject != null) {
-            builder.setSubject(subject);
-        }
 
         builder.signWith(signatureAlgorithm, signingKey);
 
-        if (ttlMillis >= 0) {
-            long expMillis = nowMillis + ttlMillis;
+        long expMillis = 0L;
+        if (ttl >= 0) {
+            expMillis = nowMillis + ttl * 1000;
             Date exp = new Date(expMillis);
             builder.setExpiration(exp);
         }
-        return builder.compact();
+        String token = builder.compact();
+        return new JwtResult(token, expMillis);
     }
 
-    public String updateToken(String token, long ttlMillis) {
+    public JwtResult updateToken(String token, long ttl) {
         try {
             Claims claims = verifyToken(token);
-            String id = claims.getId();
-            String subject = claims.getSubject();
-            return createJwt(id, subject, ttlMillis);
+            return createJwt(claims, ttl);
         } catch (Exception e) {
             logger.error(e.getMessage());
             e.printStackTrace();

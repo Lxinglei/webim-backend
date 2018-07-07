@@ -10,6 +10,8 @@ public class UserExecutor extends BaseExecutor {
 
     private UserInfo userInfo;
 
+    private JwtResult jwt;
+
     public UserInfo getUserInfo() {
         return userInfo;
     }
@@ -23,6 +25,20 @@ public class UserExecutor extends BaseExecutor {
         this.setState(userStateEnum.getState());
         this.setMessage(userStateEnum.getMessage());
         this.setUserInfo(userInfo);
+    }
+
+    public UserExecutor(UserStateEnum userStateEnum, JwtResult jwtResult) {
+        this.setState(userStateEnum.getState());
+        this.setMessage(userStateEnum.getMessage());
+        this.setJwt(jwtResult);
+    }
+
+    public JwtResult getJwt() {
+        return jwt;
+    }
+
+    public void setJwt(JwtResult jwt) {
+        this.jwt = jwt;
     }
 
     public void setUserInfo(UserInfo userInfo) {

@@ -16,10 +16,16 @@ public interface UserService {
     UserExecutor addLocalUser(LocalAuth localAuth);
 
     /**
-     * 判断该本地用户是否已注册
+     * 根据用户名查找用户
+     * @param username
+     * @return
+     */
+    LocalAuth findByUsername(String username);
+
+    /**
+     * 登录
      * @param localAuth
      * @return
      */
-    boolean isLocalUserRegistered(LocalAuth localAuth);
-
+    UserExecutor loginLocalUser(LocalAuth localAuth);
 }

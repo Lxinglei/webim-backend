@@ -104,7 +104,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
      *
      * @return
      */
-    @Bean
+    @Bean(name = "multipartResolver")
     protected CommonsMultipartResolver getMultipartResolver() {
         logger.info("开始配置文件上传...");
         CommonsMultipartResolver resolver = new CommonsMultipartResolver();
@@ -132,7 +132,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
         registry
                 .addInterceptor(apiInterceptor)
                 .addPathPatterns("/user/**")
-                .excludePathPatterns("/user/localAuth");
+                .excludePathPatterns("/user/localAuth/**");
         super.addInterceptors(registry);
     }
 }

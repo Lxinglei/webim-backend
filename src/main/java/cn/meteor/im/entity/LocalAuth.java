@@ -3,10 +3,12 @@ package cn.meteor.im.entity;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
 
@@ -34,6 +36,7 @@ public class LocalAuth {
      * 用户名
      */
     @ApiModelProperty(value = "用户名(不能重复)", required = true)
+    @NotEmpty
     @Size(min = 3, max = 10, message = "{localAuth.username}")
     private String username;
 
@@ -41,6 +44,7 @@ public class LocalAuth {
      * 密码
      */
     @ApiModelProperty(value = "密码)", required = true)
+    @NotEmpty
     @Size(min = 3, max = 10, message = "{localAuth.password}")
     private String password;
 

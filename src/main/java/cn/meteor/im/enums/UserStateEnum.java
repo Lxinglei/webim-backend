@@ -11,7 +11,9 @@ public enum  UserStateEnum {
     GENDER_SECRET(0, "保密"),
     DISABLED(-1, "用户禁用"),
     REGISTERED(-1001, "用户名已被注册"),
-    ENABLED(1, "用户启用");
+    ENABLED(1, "用户启用"),
+    LOGIN_FAILED(-1001, "用户名或密码错误"),
+    NOT_EXISTS(-1001, "用户不存在");
 
     /**
      * 状态码
@@ -43,4 +45,5 @@ public enum  UserStateEnum {
     public void setMessage(String message) {
         this.message = message;
     }
+
 }
