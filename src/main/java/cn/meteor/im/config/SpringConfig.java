@@ -1,15 +1,20 @@
 package cn.meteor.im.config;
 
-import com.mchange.v2.c3p0.ComboPooledDataSource;
+import com.alibaba.druid.pool.DruidDataSource;
 import org.mybatis.spring.SqlSessionFactoryBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.io.ClassPathResource;
+import org.springframework.context.EnvironmentAware;
+import org.springframework.context.annotation.*;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.core.annotation.Order;
+import org.springframework.core.env.Environment;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import tk.mybatis.spring.mapper.MapperScannerConfigurer;
 
 import javax.sql.DataSource;
@@ -21,9 +26,14 @@ import java.util.Properties;
  */
 @Configuration
 @ComponentScan(basePackages = {"cn.meteor.im.service"})
-@EnableAsync
-@PropertySource("classpath:jdbc.properties")
-public class SpringConfig {
+@EnableTransactionManagement
+@Import(PropertyConfig.class)
+public class SpringConfig implements EnvironmentAware {
+
+    @Autowired
+    private Environment env;
+
+    private Logger logger = LoggerFactory.getLogger(SpringConfig.class);
 
     @Value("${jdbc.driver}")
     private String driverClassName;
@@ -38,6 +48,15 @@ public class SpringConfig {
     private String jdbcPassword;
 
 
+    @Override
+    public void setEnvironment(Environment environment) {
+        this.env = environment;
+        this.driverClassName = env.getProperty("jdbc.driver");
+        this.jdbcUrl = env.getProperty("jdbc.url");
+        this.jdbcUsername = env.getProperty("jdbc.username");
+        this.jdbcPassword = env.getProperty("jdbc.password");
+    }
+
 
     /**
      * 配置数据源
@@ -46,20 +65,35 @@ public class SpringConfig {
      */
     @Bean
     protected DataSource getDataSource() throws PropertyVetoException {
-        ComboPooledDataSource dataSource = new ComboPooledDataSource();
+        /*ComboPooledDataSource dataSource = new ComboPooledDataSource();
         dataSource.setDriverClass(driverClassName);
         dataSource.setJdbcUrl(jdbcUrl);
         dataSource.setUser(jdbcUsername);
         dataSource.setPassword(jdbcPassword);
 
-        /**
+        *//**
          * c3p0连接池的私有属性
-         */
+         *//*
         dataSource.setMaxPoolSize(30);
         dataSource.setMinPoolSize(10);
         dataSource.setAutoCommitOnClose(false);
         dataSource.setCheckoutTimeout(10000);
-        dataSource.setAcquireRetryAttempts(2);
+        dataSource.setAcquireRetryAttempts(4);*/
+        logger.debug("开始配置数据源：\ndriver:{}\nurl:{}\nusername:{}\npassword:{}\n",
+                driverClassName,
+                jdbcUrl,
+                jdbcUsername,
+                jdbcPassword);
+
+        DruidDataSource dataSource = new DruidDataSource();
+        dataSource.setDriverClassName(driverClassName);
+        dataSource.setUrl(jdbcUrl);
+        dataSource.setUsername(jdbcUsername);
+        dataSource.setPassword(jdbcPassword);
+
+        dataSource.setInitialSize(10);
+        dataSource.setMinIdle(10);
+        dataSource.setMaxActive(30);
         return dataSource;
     }
 
@@ -69,16 +103,18 @@ public class SpringConfig {
      * @throws PropertyVetoException
      */
     @Bean(name = "sqlSessionFactoryBean")
-    protected SqlSessionFactoryBean getSqlSessionFactoryBean() throws PropertyVetoException {
+    protected SqlSessionFactoryBean getSqlSessionFactoryBean() throws Exception {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(getDataSource());
-        sqlSessionFactoryBean.setConfigLocation(new ClassPathResource("mybatis-config.xml"));
+        sqlSessionFactoryBean.setConfigLocation(new DefaultResourceLoader().getResource("classpath:mybatis-config.xml"));
         sqlSessionFactoryBean.setTypeAliasesPackage("cn.meteor.im.entity");
+        sqlSessionFactoryBean.setMapperLocations(new PathMatchingResourcePatternResolver()
+                .getResources("classpath:mapper/*.xml"));
         return sqlSessionFactoryBean;
     }
 
     /**
-     * 配置MapperScanne和MyBatis通用Mapper
+     * 配置MapperScanner和MyBatis通用Mapper
      * @return
      */
     @Bean
@@ -98,4 +134,6 @@ public class SpringConfig {
         transactionManager.setDataSource(getDataSource());
         return transactionManager;
     }
+
+
 }

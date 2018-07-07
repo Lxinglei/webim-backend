@@ -6,6 +6,9 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
 import javax.servlet.Filter;
 import javax.servlet.ServletRegistration;
 
+/**
+ * @author Meteor
+ */
 public class WebContextInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
     @Override
     protected Class<?>[] getRootConfigClasses() {
@@ -24,7 +27,7 @@ public class WebContextInitializer extends AbstractAnnotationConfigDispatcherSer
 
     @Override
     protected Class<?>[] getServletConfigClasses() {
-        return new Class[] {WebMvcConfig.class};
+        return new Class[] {PropertyConfig.class, WebMvcConfig.class};
     }
 
     @Override

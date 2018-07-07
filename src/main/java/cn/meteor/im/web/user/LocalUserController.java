@@ -43,6 +43,7 @@ public class LocalUserController {
                 return SysResult.fail(userExecutor.getMessage());
             }
         } catch (Exception e) {
+            e.printStackTrace();
             return SysResult.fail(e.getMessage());
         }
     }

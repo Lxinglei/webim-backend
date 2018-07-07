@@ -21,14 +21,10 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-import static com.google.common.base.Predicates.or;
-
 /**
  * @author Meteor
- * Swagger配置类
+ * SpringMVC配置类
  */
-
-
 @EnableSwagger2
 @EnableWebMvc
 @ComponentScan(basePackages = {"cn.meteor.im.web", "cn.meteor.im.interceptors"})
@@ -135,7 +131,8 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
         logger.info("开始配置拦截器...");
         registry
                 .addInterceptor(apiInterceptor)
-                .addPathPatterns("/*", "/user/*");
+                .addPathPatterns("/user/**")
+                .excludePathPatterns("/user/localAuth");
         super.addInterceptors(registry);
     }
 }
