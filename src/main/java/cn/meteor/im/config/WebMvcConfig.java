@@ -131,7 +131,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
         logger.info("开始配置拦截器...");
         registry
                 .addInterceptor(apiInterceptor)
-                .addPathPatterns("/user/**")
+                .addPathPatterns("/user/**", "/friendship/**")
                 .excludePathPatterns("/user/localAuth/**");
         super.addInterceptors(registry);
     }

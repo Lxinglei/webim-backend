@@ -75,10 +75,4 @@ public class LocalUserController {
         }
     }
 
-    @RequestMapping(value = "/localAuthFail", method = RequestMethod.GET)
-    public SysResult registerAsLocalAuthFail(HttpServletRequest request, @Validated LocalAuth localAuth, BindingResult bindingResult) {
-        UserInfo userInfo = UserUtil.getCurrentUser(request);
-        return SysResult.fail();
-    }
-
 }

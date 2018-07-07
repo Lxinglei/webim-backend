@@ -1,5 +1,7 @@
 package cn.meteor.im.entity;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -13,6 +15,9 @@ import java.util.Date;
 @Table(name = "t_user_info")
 public class UserInfo {
 
+    public interface UserSimpleInfoView {};
+    public interface UserDetailInfoView extends UserSimpleInfoView {};
+
     /**
      * 用户ID
      */
@@ -24,6 +29,11 @@ public class UserInfo {
      * 用户昵称
      */
     private String nickName;
+
+    /**
+     * 用户头像
+     */
+    private String avatar;
 
     /**
      * 性别，0：保密，1：男，2：女
@@ -55,6 +65,7 @@ public class UserInfo {
      */
     private Date lastUpdateTime;
 
+    @JsonView(UserSimpleInfoView.class)
     public Long getUserId() {
         return userId;
     }
@@ -63,6 +74,7 @@ public class UserInfo {
         this.userId = userId;
     }
 
+    @JsonView(UserSimpleInfoView.class)
     public String getNickName() {
         return nickName;
     }
@@ -71,6 +83,7 @@ public class UserInfo {
         this.nickName = nickName;
     }
 
+    @JsonView(UserSimpleInfoView.class)
     public Integer getGender() {
         return gender;
     }
@@ -79,6 +92,7 @@ public class UserInfo {
         this.gender = gender;
     }
 
+    @JsonView(UserSimpleInfoView.class)
     public Date getBirthday() {
         return birthday;
     }
@@ -87,6 +101,7 @@ public class UserInfo {
         this.birthday = birthday;
     }
 
+    @JsonView(UserSimpleInfoView.class)
     public String getSignature() {
         return signature;
     }
@@ -95,6 +110,7 @@ public class UserInfo {
         this.signature = signature;
     }
 
+    @JsonView(UserDetailInfoView.class)
     public Integer getStatus() {
         return status;
     }
@@ -103,6 +119,7 @@ public class UserInfo {
         this.status = status;
     }
 
+    @JsonView(UserDetailInfoView.class)
     public Date getCreateTime() {
         return createTime;
     }
@@ -111,11 +128,20 @@ public class UserInfo {
         this.createTime = createTime;
     }
 
+    @JsonView(UserDetailInfoView.class)
     public Date getLastUpdateTime() {
         return lastUpdateTime;
     }
 
     public void setLastUpdateTime(Date lastUpdateTime) {
         this.lastUpdateTime = lastUpdateTime;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 }

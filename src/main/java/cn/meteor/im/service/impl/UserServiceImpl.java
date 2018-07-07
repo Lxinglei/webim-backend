@@ -132,4 +132,9 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public UserInfo findUserInfoByUserId(Long friendId) {
+        return userInfoMapper.selectByPrimaryKey(friendId);
+    }
+
 }

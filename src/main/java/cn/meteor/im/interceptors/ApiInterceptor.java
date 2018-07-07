@@ -48,6 +48,7 @@ public class ApiInterceptor implements HandlerInterceptor {
                 userInfo.setUserId(Long.parseLong(claims.get("userId").toString()));
                 request.setAttribute("currentUser", userInfo);
             } catch (ExpiredJwtException e) {
+                response.reset();
                 PrintWriter pw = response.getWriter();
                 logger.error("token已过期:{}", e.getMessage());
                 response.setStatus(404);
@@ -55,6 +56,7 @@ public class ApiInterceptor implements HandlerInterceptor {
                 pw.print("{\"code\": \"4042\", \"error\": \"ExpiredToken\", \"message\": \"" + e.getMessage() + "\"}");
                 pw.flush();
             } catch (UnsupportedJwtException | MalformedJwtException e) {
+                response.reset();
                 PrintWriter pw = response.getWriter();
                 logger.error("非法的token:{}", e.getMessage());
                 response.setStatus(404);

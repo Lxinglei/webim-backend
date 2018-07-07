@@ -1,10 +1,7 @@
 package cn.meteor.im.entity;
 
 import javax.annotation.Generated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -41,6 +38,12 @@ public class Friendship {
      * 最后更新时间
      */
     private Date lastUpdateTime;
+
+    /**
+     * 关联外键
+     */
+    @Transient
+    private UserInfo friend;
 
     public String getFriendshipId() {
         return friendshipId;
@@ -80,5 +83,13 @@ public class Friendship {
 
     public void setLastUpdateTime(Date lastUpdateTime) {
         this.lastUpdateTime = lastUpdateTime;
+    }
+
+    public UserInfo getFriend() {
+        return friend;
+    }
+
+    public void setFriend(UserInfo friend) {
+        this.friend = friend;
     }
 }
