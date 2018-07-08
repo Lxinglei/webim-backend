@@ -27,7 +27,8 @@ import java.util.Properties;
 @Configuration
 @ComponentScan(basePackages = {"cn.meteor.im.service"})
 @EnableTransactionManagement
-@Import(PropertyConfig.class)
+@Order(1)
+@Import(WebSocketConfig.class)
 public class SpringConfig implements EnvironmentAware {
 
     @Autowired
