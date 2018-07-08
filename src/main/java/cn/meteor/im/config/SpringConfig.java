@@ -25,10 +25,9 @@ import java.util.Properties;
  * @author Meteor
  */
 @Configuration
-@ComponentScan(basePackages = {"cn.meteor.im.service"})
+@ComponentScan(basePackages = {"cn.meteor.im.service", "cn.meteor.im.common"})
 @EnableTransactionManagement
-@Order(1)
-@Import(WebSocketConfig.class)
+@Import({PropertyConfig.class})
 public class SpringConfig implements EnvironmentAware {
 
     @Autowired
