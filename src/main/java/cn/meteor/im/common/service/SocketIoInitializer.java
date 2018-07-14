@@ -20,19 +20,12 @@ public class SocketIoInitializer implements InitializingBean {
     @Autowired
     private EventListener eventListener;
 
+    @Autowired
+    private SocketIOServer server;
+
     @Override
     public void afterPropertiesSet() throws Exception {
-        Configuration config = new Configuration();
-        config.setPort(10010);
 
-        SocketConfig socketConfig = new SocketConfig();
-        socketConfig.setReuseAddress(true);
-        socketConfig.setTcpNoDelay(true);
-        socketConfig.setSoLinger(0);
-        config.setSocketConfig(socketConfig);
-        config.setHostname("0.0.0.0");
-
-        SocketIOServer server = new SocketIOServer(config);
         server.addListeners(eventListener);
         server.startAsync();
         logger.info("即时通讯服务器启动成功...");

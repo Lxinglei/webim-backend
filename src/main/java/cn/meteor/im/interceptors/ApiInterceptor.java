@@ -31,6 +31,12 @@ public class ApiInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
         logger.info("进入ApiInterceptor...");
         String authorization = request.getHeader("Authorization");
+        if (null == authorization) {
+            authorization = request.getParameter("access_token");
+            if (null != authorization) {
+                authorization = TOKEN_HEADER + authorization;
+            }
+        }
         logger.debug(authorization);
         if (null == authorization || !authorization.startsWith(TOKEN_HEADER)) {
             logger.error("未带token");

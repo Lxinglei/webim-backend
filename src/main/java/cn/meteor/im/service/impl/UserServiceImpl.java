@@ -123,7 +123,7 @@ public class UserServiceImpl implements UserService {
             Claims claims = new DefaultClaims();
             claims.setId(Long.toString(userInfo.getUserId()));
             claims.put("userId", userInfo.getUserId());
-            JwtResult jwt = JwtUtil.createJwt(claims, 10 * 60);
+            JwtResult jwt = JwtUtil.createJwt(claims, 120 * 60);
 
             return new UserExecutor(UserStateEnum.SUCCESS, jwt);
         } catch (Exception e) {

@@ -35,6 +35,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
     private ApiInterceptor apiInterceptor;
 
+
     @Autowired
     public WebMvcConfig(ApiInterceptor apiInterceptor) {
         logger.info("开始配置springMVC...");
@@ -125,13 +126,30 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
                 .build();
     }
 
+    /*@Override
+    public void addCorsMappings(CorsRegistry registry) {
+        logger.info("开始配置跨域信息...");
+        super.addCorsMappings(registry);
+        registry
+                .addMapping("/**")
+                .allowedHeaders(
+                        "Accept",
+                        "Access-Control-Allow-Headers",
+                        "Access-Control-Allow-Origin",
+                        "Access-Control-Allow-Methods",
+                        "Access-Control-Max-Age",
+                        "Authorization")
+                .allowedMethods("GET", "POST")
+                .allowedOrigins("http://127.0.0.1:3000")
+        ;
+    }*/
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         logger.info("开始配置拦截器...");
         registry
                 .addInterceptor(apiInterceptor)
-                .addPathPatterns("/user/**", "/friendship/**")
+                .addPathPatterns("/user/**", "/friendship/**", "/message/**")
                 .excludePathPatterns("/user/localAuth/**");
         super.addInterceptors(registry);
     }

@@ -1,6 +1,8 @@
 package cn.meteor.im.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import com.corundumstudio.socketio.SocketConfig;
+import com.corundumstudio.socketio.SocketIOServer;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,6 +59,22 @@ public class SpringConfig implements EnvironmentAware {
         this.jdbcPassword = env.getProperty("jdbc.password");
     }
 
+
+    @Bean
+    protected SocketIOServer socketIOServer() {
+        com.corundumstudio.socketio.Configuration config = new com.corundumstudio.socketio.Configuration();
+        config.setPort(10010);
+
+        SocketConfig socketConfig = new SocketConfig();
+        socketConfig.setReuseAddress(true);
+        socketConfig.setTcpNoDelay(true);
+        socketConfig.setSoLinger(0);
+        config.setSocketConfig(socketConfig);
+        config.setHostname("0.0.0.0");
+
+        SocketIOServer server = new SocketIOServer(config);
+        return server;
+    }
 
     /**
      * 配置数据源

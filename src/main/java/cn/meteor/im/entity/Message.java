@@ -1,9 +1,9 @@
 package cn.meteor.im.entity;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
@@ -34,6 +34,7 @@ public class Message {
     /**
      * 接收者ID
      */
+    @NotNull
     private Long receiverId;
 
     /**
@@ -44,6 +45,7 @@ public class Message {
     /**
      * 消息内容
      */
+    @NotEmpty
     private String msgContent;
 
     /**
@@ -60,6 +62,12 @@ public class Message {
      * 最后更新时间
      */
     private Date lastUpdateTime;
+
+    @Transient
+    private UserInfo sender;
+
+    @Transient
+    private UserInfo receiver;
 
     public String getMessageId() {
         return messageId;
@@ -127,6 +135,22 @@ public class Message {
 
     public String getReceiverName() {
         return receiverName;
+    }
+
+    public UserInfo getSender() {
+        return sender;
+    }
+
+    public void setSender(UserInfo sender) {
+        this.sender = sender;
+    }
+
+    public UserInfo getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver(UserInfo receiver) {
+        this.receiver = receiver;
     }
 
     public void setReceiverName(String receiverName) {

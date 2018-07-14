@@ -1,5 +1,6 @@
 package cn.meteor.im.config;
 
+import cn.meteor.im.filter.CorsFilter;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
@@ -17,7 +18,9 @@ public class WebContextInitializer extends AbstractAnnotationConfigDispatcherSer
 
     @Override
     protected Filter[] getServletFilters() {
-        return new Filter[] {new CharacterEncodingFilter("UTF-8",true)};
+        return new Filter[] {
+                new CharacterEncodingFilter("UTF-8",true)
+        };
     }
 
     @Override

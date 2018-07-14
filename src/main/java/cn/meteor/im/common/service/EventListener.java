@@ -2,6 +2,7 @@ package cn.meteor.im.common.service;
 
 
 import cn.meteor.im.common.bean.MsgBean;
+import cn.meteor.im.entity.Message;
 import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.annotation.OnConnect;
 import com.corundumstudio.socketio.annotation.OnDisconnect;
@@ -31,18 +32,6 @@ public class EventListener {
         String userId = client.getHandshakeData().getSingleUrlParam("userId");
         logger.info("建立连接:{}", userId);
         clientCache.addClient(client, userId);
-    }
-
-    @OnEvent("OnMSG")
-    public void onSync(SocketIOClient client, MsgBean bean) {
-        logger.info("收到消息-from: {} to:{}\n", bean.getFrom(), bean.getTo());
-        SocketIOClient ioClients = clientCache.getClient(bean.getTo());
-        System.out.println("clientCache");
-        if (ioClients == null) {
-            logger.info("你发送消息的用户不在线");
-            return;
-        }
-        socketIOResponse.sendEvent(ioClients,bean);
     }
 
     @OnDisconnect
